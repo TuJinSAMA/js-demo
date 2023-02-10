@@ -16,3 +16,9 @@ console.log(_.map(arr, parseInt));
 
 console.log(fp.map(parseInt)(arr));
 // [23, 8, 10]
+
+const str = 'world sild deb'
+
+const f = fp.flowRight(fp.map(fp.flowRight(fp.toUpper)), fp.split(' '))
+
+console.log(f(str));

@@ -18,4 +18,8 @@ const trace = m.curry((tag, v) => {
 const f = flowRight(toUpper, trace('first之后'), first, trace('reverse之后'), reverse)
 
 const arr = ['andy', 'bob', 'lynn']
-console.log(f(arr))
+// console.log(f(arr))
+
+module.exports = {
+  trace
+}

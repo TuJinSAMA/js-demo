@@ -39,4 +39,8 @@ const map = m.curry((fn, arr) => arr.map(fn))
 
 const fn = compose(join('-'), map(toLower), split(' '))
 
-console.log(fn('NEVER SAY DIE'))
+// console.log(fn('NEVER SAY DIE'))
+
+module.exports = {
+  compose
+}
