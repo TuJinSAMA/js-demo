@@ -1,5 +1,7 @@
 // Functor 函子
-// 个人简单理解为一个容器
+// 个人简单理解为一个容器 容器内存有函子
+// 函子有一个map方法 接收一个函数 此函数才是处理值的函数
+
 
 class Container {
   static of(value) {
