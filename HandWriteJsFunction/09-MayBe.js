@@ -1,4 +1,5 @@
 // MayBe 函子
+// 可以避免空值报错
 
 class MayBe {
   static of(value) {

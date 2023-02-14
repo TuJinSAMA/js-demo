@@ -1,4 +1,5 @@
 // Functor 函子
+// 个人简单理解为一个容器
 
 class Container {
   static of(value) {
