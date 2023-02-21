@@ -28,13 +28,27 @@ import MyPromise from './03-myPromise'
 // temp
 let promise = new MyPromise((resolve, reject) => {
   setTimeout(() => {
-    // resolve('async success')
-    reject('async fail')
+    resolve('async success')
+    // reject('async fail')
   }, 2000)
   // throw new Error('executor error')
   // resolve('success')
   // reject('fail')
 })
+
+promise.then((res) => {
+  console.log(res);
+  return new MyPromise((resolve, reject) => { 
+    setTimeout(() => {
+      resolve('async 11')
+      // reject('async fail')
+    }, 2000)
+  })
+}).then(res => {
+  console.log(res)
+})
+
+// p.then(undefined, err => console.log(err))
 
 // promise.then(result => {
 //   console.log(result)
@@ -47,11 +61,11 @@ let promise = new MyPromise((resolve, reject) => {
 //   console.log(res);
 // })
 
-promise.then().then().then(res => {
-  console.log(res);
-}, err => {
-  console.log(err)
-})
+// promise.then().then().then(res => {
+//   console.log(res);
+// }, err => {
+//   console.log(err)
+// })
 
 // console.log('test')
 
@@ -66,17 +80,42 @@ promise.then().then().then(res => {
 //   console.log(result)
 // })
 
+const p1 = () => {
+  return new MyPromise((resolve, reject) => { 
+    // resolve('p1 resolve')
+    reject('p1 reject')
+  })
+}
 
-let p = new Promise((resolve, reject) => {
-  setTimeout(() => {
-    reject('fff')
-  }, 0);
-}).then().then().then(res => {
-  console.log('1')
-  console.log(res);
-}, err => {
-  console.log('2');
-  console.log(err)
-})
+const p2 = () => {
+  return new MyPromise((resolve, reject) => {
+    setTimeout(() => {
+      // resolve('p2 resolve')
+      reject('p2 reject')
+    }, 1000);
+  })
+}
 
-console.log(p);
+// p1().finally(() => {
+//   console.log('finally')
+//   return p2()
+// }).then(result => {
+//   console.log('1');
+//   console.log(result);
+// }, err => {
+//   console.log('2')
+//   console.log(err)
+// })
+
+// MyPromise.all([p2(), p1()]).then(result => {
+//   console.log(result);
+// }, err => {
+//   console.log(err)
+// })
+
+// p2().then(result => {
+//   console.log(result);
+// }).catch(err => {
+//   console.log('err');
+//   console.log(err);
+// })
