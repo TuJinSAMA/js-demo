@@ -3,7 +3,7 @@ const HTMLWebPackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 module.exports = {
   mode: 'development',
-  entry: './Promise/01-generator.js',
+  entry: './ESNext/01-Iterator.js',
   output: {
     path: path.resolve("dist"),
     filename: 'bundle.js'
