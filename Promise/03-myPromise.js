@@ -153,6 +153,20 @@ export default class MyPromise {
       })
     })
   }
+
+  // 执行多个 promise 返回最先改变状态的那个 promise
+  // 如果传入的数组中有普通值 则会直接返回 成功状态的 promise
+  static race(array) {
+    return new MyPromise((resolve, reject) => {
+      array.forEach((item) => {
+        if (item instanceof MyPromise) {
+          item.then(value => resolve(value), reason => reject(reason))
+        } else {
+          resolve(item)
+        }
+      })
+    })
+  }
 }
 
 function parsePromise(promise, result, resolve, reject) {

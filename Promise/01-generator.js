@@ -36,17 +36,17 @@ let promise = new MyPromise((resolve, reject) => {
   // reject('fail')
 })
 
-promise.then((res) => {
-  console.log(res);
-  return new MyPromise((resolve, reject) => { 
-    setTimeout(() => {
-      resolve('async 11')
-      // reject('async fail')
-    }, 2000)
-  })
-}).then(res => {
-  console.log(res)
-})
+// promise.then((res) => {
+//   console.log(res);
+//   return new MyPromise((resolve, reject) => { 
+//     setTimeout(() => {
+//       resolve('async 11')
+//       // reject('async fail')
+//     }, 2000)
+//   })
+// }).then(res => {
+//   console.log(res)
+// })
 
 // p.then(undefined, err => console.log(err))
 
@@ -82,8 +82,8 @@ promise.then((res) => {
 
 const p1 = () => {
   return new MyPromise((resolve, reject) => { 
-    // resolve('p1 resolve')
-    reject('p1 reject')
+    resolve('p1 resolve')
+    // reject('p1 reject')
   })
 }
 
@@ -119,3 +119,9 @@ const p2 = () => {
 //   console.log('err');
 //   console.log(err);
 // })
+
+MyPromise.race([p2(),'2', p1()]).then(res => {
+  console.log('res', res)
+}).catch(err => {
+  console.log('err', err);
+})
