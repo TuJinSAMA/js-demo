@@ -131,23 +131,68 @@ export default class RPromise {
     // 返回一个 promise ,并且返回的是前面 promise 的值
     // 例如 Promise.reject(3).finally(() => {}) ---3
     // Promise.resolve(2).finally(() => {}) ---2
-    if(typeof callBack !== 'function') throw new TypeError('the param must be a function!')
+    if (typeof callBack !== 'function') throw new TypeError('the param must be a function!')
     return this.then(value => {
       return RPromise.resolve(callBack()).then(() => value)
     }, reason => {
-      return RPromise.reject(callBack()).then(undefined, () => {throw reason})
+      return RPromise.reject(callBack()).then(undefined, () => { throw reason })
     })
   }
 
   static resolve(value) {
     // 接收一个普通值 或 一个 promise
     // 如果是普通值则返回一个成功状态的 promise 如果是 promise 则返回传入的 promise
-    if(value instanceof RPromise) return value
+    if (value instanceof RPromise) return value
     return new RPromise(resolve => resolve(value))
   }
 
   static reject(reason) {
     // 返回一个给定了拒绝原因的 promise 
     return new RPromise((resolve, reject) => reject(reason))
+  }
+
+  static all(promises) {
+    // 接收一个数组 数组内的值可以是普通值也可以是 promise
+    // 返回一个 promise 只有数组内的 promise 状态都变为成功时 返回的 promise 的状态才会变为成功
+    // promise 的结果也是数组 存放着传入数组内 promise 的返回结果 位置不按返回结果先后 而是按照传入数组的顺序
+    if (!Array.isArray(promises)) return
+    let _results = [];
+    let _count = 0;
+    return new RPromise((resolve, reject) => {
+      try {
+        const addData = (key, value) => {
+          _results[key] = value;
+          (++_count >= promises.length) && resolve(_results)
+        }
+        promises.forEach((item, index) => {
+          if (item instanceof RPromise) {
+            item.then(value => addData(index, value), reject)
+          } else {
+            addData(index, item)
+          }
+        })
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
+  static race(promises) {
+    // 接收一个数组 数组内的值可以是普通值也可以是 promise
+    // 返回一个 promise 数组内的 promise 哪个先改变状态 就返回这个 promise 的结果
+    if (!Array.isArray(promises)) return
+    return new RPromise((resolve, reject) => {
+      try {
+        promises.forEach((item, index) => {
+          if (item instanceof RPromise) {
+            item.then(resolve, reject)
+          } else {
+            resolve(item)
+          }
+        })
+      } catch (error) {
+        reject(error)
+      }
+    })
   }
 }

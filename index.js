@@ -85,3 +85,43 @@ import RPromise from "./Promise/04-reviewPromise";
 //   console.log('catch:', err)
 // })
 // console.log(p);
+
+// 测试 Promise.all()
+// let p1 = 1;
+// let p2 = new RPromise((resolve, reject) => {
+//   setTimeout(() => {
+//     resolve(2)
+//   }, 1000);
+// })
+// let p3 = new RPromise((resolve, reject) => {
+//   setTimeout(() => {
+//     // resolve(3)
+//     reject('err')
+//   }, 2000);
+// })
+
+// RPromise.all([p1, p2, p3]).then(res => {
+//   console.log('success:', res);
+// }).catch(err => {
+//   console.log('catch:', err)
+// })
+
+// 测试 Promise.race()
+// let p2 = new Promise((resolve, reject) => { 
+//   setTimeout(() => {
+//     // resolve(2)
+//     reject(2)
+//   }, 1000);
+// })
+// let p3 = new Promise((resolve, reject) => { 
+//   setTimeout(() => {
+//     resolve(3)
+//     // reject('err')
+//   }, 2000);
+// })
+
+// Promise.race([p2, p3]).then(res => {
+//   console.log('success:', res);
+// }).catch(err => {
+//   console.log('catch:', err)
+// })
