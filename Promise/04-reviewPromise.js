@@ -63,8 +63,8 @@ export default class RPromise {
 
   then(successCallBack, failCallBack) {
     // 调用 then 方法时如果不传入回调 则默认继续向下传递
-    successCallBack = typeof successCallBack === 'function' ? successCallBack : value => value
-    failCallBack = typeof failCallBack === 'function' ? failCallBack : reason => { throw reason }
+    successCallBack = typeof successCallBack === 'function' ? successCallBack : (value => value)
+    failCallBack = typeof failCallBack === 'function' ? failCallBack : (reason => { throw reason })
     // 接收两个参数 一个成功的回调 一个失败的回调
     let _promise = new RPromise((resolve, reject) => {
       // 因为调用 resolve 或 reject 可能是同步也可能是异步 所以这里需要判断 status
@@ -118,5 +118,36 @@ export default class RPromise {
     })
     // 返回一个 promise 以供链式调用
     return _promise
+  }
+
+  catch(callBack) {
+    // catch 是用来注册 promise 拒绝时的回调函数
+    // 返回一个 promise 对象 其实就是 .then的简写
+    return this.then(undefined, callBack)
+  }
+
+  finally(callBack) {
+    // finally 注册一个 promise 状态不论是 fulfilled 或 rejected 都会执行的回调
+    // 返回一个 promise ,并且返回的是前面 promise 的值
+    // 例如 Promise.reject(3).finally(() => {}) ---3
+    // Promise.resolve(2).finally(() => {}) ---2
+    if(typeof callBack !== 'function') throw new TypeError('the param must be a function!')
+    return this.then(value => {
+      return RPromise.resolve(callBack()).then(() => value)
+    }, reason => {
+      return RPromise.reject(callBack()).then(undefined, () => {throw reason})
+    })
+  }
+
+  static resolve(value) {
+    // 接收一个普通值 或 一个 promise
+    // 如果是普通值则返回一个成功状态的 promise 如果是 promise 则返回传入的 promise
+    if(value instanceof RPromise) return value
+    return new RPromise(resolve => resolve(value))
+  }
+
+  static reject(reason) {
+    // 返回一个给定了拒绝原因的 promise 
+    return new RPromise((resolve, reject) => reject(reason))
   }
 }
