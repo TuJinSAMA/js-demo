@@ -1,4 +1,5 @@
-import RPromise from "./Promise/04-reviewPromise";
+// import RPromise from "./Promise/04-reviewPromise";
+import './MemoryManagement/01-closure'
 
 // 测试最基本的链式调用、then 中返回 promise 的情况和异步
 // let p =new RPromise((resolve, reject) => {
